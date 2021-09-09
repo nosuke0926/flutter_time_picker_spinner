@@ -71,8 +71,10 @@ class TimePickerSpinner extends StatefulWidget {
   final int secondsInterval;
   final bool is24HourMode;
   final bool isShowSeconds;
+  final bool isShowColon;
   final TextStyle? highlightedTextStyle;
   final TextStyle? normalTextStyle;
+  final TextStyle? colonTextStyle;
   final double? itemHeight;
   final double? itemWidth;
   final AlignmentGeometry? alignment;
@@ -87,8 +89,10 @@ class TimePickerSpinner extends StatefulWidget {
       this.secondsInterval = 1,
       this.is24HourMode = true,
       this.isShowSeconds = false,
+      this.isShowColon = false,
       this.highlightedTextStyle,
       this.normalTextStyle,
+      this.colonTextStyle,
       this.itemHeight,
       this.itemWidth,
       this.alignment,
@@ -119,6 +123,8 @@ class _TimePickerSpinnerState extends State<TimePickerSpinner> {
   /// default settings
   TextStyle defaultHighlightTextStyle =
       TextStyle(fontSize: 32, color: Colors.black);
+  TextStyle defaultColonTextStyle =
+      TextStyle(fontSize: 32, color: Colors.black);
   TextStyle defaultNormalTextStyle =
       TextStyle(fontSize: 32, color: Colors.black54);
   double defaultItemHeight = 60;
@@ -138,6 +144,12 @@ class _TimePickerSpinnerState extends State<TimePickerSpinner> {
     return widget.normalTextStyle != null
         ? widget.normalTextStyle
         : defaultNormalTextStyle;
+  }
+
+  TextStyle? _getColonTextStyle() {
+    return widget.colonTextStyle != null
+        ? widget.colonTextStyle
+        : defaultColonTextStyle;
   }
 
   int _getHourCount() {
@@ -243,7 +255,17 @@ class _TimePickerSpinnerState extends State<TimePickerSpinner> {
           () => isHourScrolling = false,
         ),
       ),
-      spacer(),
+      widget.isShowColon
+          ? Container(
+              width: _getSpacing(),
+              child: Center(
+                child: Text(
+                  ':',
+                  style: _getColonTextStyle(),
+                ),
+              ),
+            )
+          : spacer(),
       SizedBox(
         width: _getItemWidth(),
         height: _getItemHeight()! * 3,
